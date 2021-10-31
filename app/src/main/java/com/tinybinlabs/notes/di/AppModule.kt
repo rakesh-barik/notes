@@ -5,10 +5,7 @@ import androidx.room.Room
 import com.tinybinlabs.notes.feature_note.data.data_source.NoteDatabase
 import com.tinybinlabs.notes.feature_note.data.repository.NoteRepositoryImpl
 import com.tinybinlabs.notes.feature_note.domain.repository.NoteRepository
-import com.tinybinlabs.notes.feature_note.domain.use_case.AddNoteUseCase
-import com.tinybinlabs.notes.feature_note.domain.use_case.DeleteNotesUseCase
-import com.tinybinlabs.notes.feature_note.domain.use_case.GetNotesUseCase
-import com.tinybinlabs.notes.feature_note.domain.use_case.NoteUseCases
+import com.tinybinlabs.notes.feature_note.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,11 +32,14 @@ object AppModule {
         return NoteRepositoryImpl(db.noteDao)
     }
 
+    @Provides
+    @Singleton
     fun provideNoteUseCases(repository: NoteRepository) : NoteUseCases {
         return NoteUseCases(
             getNotesUseCase = GetNotesUseCase(repository),
             deleteNotesUseCase = DeleteNotesUseCase(repository),
-            addNoteUseCase = AddNoteUseCase(repository)
+            addNoteUseCase = AddNoteUseCase(repository),
+            getNoteUseCase = GetNoteUseCase(repository)
         )
     }
 }
